@@ -1,12 +1,12 @@
 /** W3C Component version of hotnipi's gauge
  * Gifted to TotallyInformation by hotnipi for use with uibuilder.
  * But can be used anywhere that supports W3C vanilla components.
- * 
- * attributes:            
- *   "min" - (number, mandatory) min value  
+ *
+ * attributes:
+ *   "min" - (number, mandatory) min value
  *   "max" - (number, mandatory) max value
  *   "shape" - (string, optional) shape of the gauge. "round" makes gauge round shape and removes rivets, "rect" is default
- *   "platehue" - (number, optional) for dark theme, the plate color hue can be changed 
+ *   "platehue" - (number, optional) for dark theme, the plate color hue can be changed
  *   "multiplier" - (number, optional) multiplier for all values. scale numbers and value are divided by that, gauge shows multiplier on plate (fe: x100)
  *   "measurement" - (string, optional) the name of the measurement (temperature, humidity ...)
  *   "unit" - (string, optional) the unit of the measurement
@@ -16,15 +16,15 @@
  *   "zones" - (json string, optional) configuration of zones. An array of objects where:
  *      "type" (string) - color choice. acceptable values "low", "normal", "warn", "high"
  *      "cover" (number) - size of zone. acceptable values 1, 2 3. (1 covers space between major ticks)
- *      "rotate" (number) - to find correct value, try with 0 and manually rotate to desired position using browser developer tools. When position found, adjust the code. 
+ *      "rotate" (number) - to find correct value, try with 0 and manually rotate to desired position using browser developer tools. When position found, adjust the code.
  *   "size" - (CSS size string) - Optional. Defines the outer size (width/height). If supplied, no outer div is required to set the size. If omitted, the outer elements must set a size somewhere.
- *  
+ *
  *   All attributes can be changed at runtime, forces redraw.
  *
- *   fe: 
+ *   fe:
  *   document.getElementById('gauge').setAttribute('digits',JSON.stringify({size:80,distance:15}))
- *   document.getElementById('gauge').setAttribute('max',1200)    
- * 
+ *   document.getElementById('gauge').setAttribute('max',1200)
+ *
  * CHANGELOG:
  * - Wrap component as per other uibuilder components
  * - Move styles to the template
@@ -429,55 +429,55 @@ class GaugeHotnipi extends HTMLElement {
     }
 
     static get observedAttributes() {
-        return ["min", "max", "shape", "multiplier", "measurement", "unit", "rivets", "digits", "led", "zones", "platehue", "size"];
+        return ['min', 'max', 'shape', 'multiplier', 'measurement', 'unit', 'rivets', 'digits', 'led', 'zones', 'platehue', 'size']
     }
-    
+
     connectedCallback() {
         this.draw()
     }
 
     // TODO: Improve attribute error logs
     attributeChangedCallback(name, from, to) {
-        if (from !== to) {
-            if (this.config.hasOwnProperty(name)) {
+        if (from !== to) { // eslint-disable-line sonarjs/no-collapsible-if
+            if (Object.prototype.hasOwnProperty.call(this.config, 'name')) {
                 switch (name) {
-                    case "min": {
+                    case 'min': {
                         to = parseFloat(to)
                         if (isNaN(to)) {
                             to = 0
                         }
                         break
                     }
-                    case "max": {
+                    case 'max': {
                         to = parseFloat(to)
                         if (isNaN(to)) {
                             to = 100
                         }
                         break
                     }
-                    case "platehue": {
+                    case 'platehue': {
                         // If a string passed as the hue, attempt to calculate the actual value.
                         // Allows for internal and external css variables to be used.
                         console.log(isNaN(to), getComputedStyle(document.body).getPropertyValue(to))
                         if (isNaN(to)) {
-                            let hue = getComputedStyle(document.body).getPropertyValue(to)
+                            const hue = getComputedStyle(document.body).getPropertyValue(to)
                             if (hue === '') to = this.config.platehue
                             else to = hue
                         }
                         break
                     }
-                    case "multiplier": {
+                    case 'multiplier': {
                         to = parseFloat(to)
-                        if (isNaN(to) || to == 0) {
+                        if (isNaN(to) || to === 0) {
                             to = false
                         }
-                        break;
+                        break
                     }
-                    case "led":
-                    case "rivets": {
-                        to = to == "true" ? true : false
+                    case 'led':
+                    case 'rivets': {
+                        to = to === 'true' ? true : false // eslint-disable-line no-unneeded-ternary
                     }
-                    case "digits": {
+                    case 'digits': { // eslint-disable-line no-fallthrough
                         try {
                             to = JSON.parse(to)
                         }
@@ -485,9 +485,9 @@ class GaugeHotnipi extends HTMLElement {
                             console.log(error)
                             to = this.config.digits
                         }
-                        break;
+                        break
                     }
-                    case "zones": {
+                    case 'zones': {
                         try {
                             to = JSON.parse(to)
                         } catch (error) {
@@ -497,12 +497,12 @@ class GaugeHotnipi extends HTMLElement {
                         break
                     }
                     default:
-                        break;
+                        break
                 }
                 this.config[name] = to
             }
         }
-        
+
         this.draw()
         if (this.lastValue) {
             this.update(this.lastValue)
@@ -512,33 +512,33 @@ class GaugeHotnipi extends HTMLElement {
     /** Draws the gauge into the DOM */
     draw() {
 
-        //scales from min - max
-        let gap = ((this.config.max - this.config.min) / 10)
+        // scales from min - max
+        const gap = ((this.config.max - this.config.min) / 10)
         let n = this.config.min
         this.config.scales = []
-        let use = this.config.multiplier
+        const use = this.config.multiplier
         for (let i = 0; i < 11; ++i) {
             this.config.scales.push(n)
             n = parseFloat((n + gap).toFixed(2))
         }
-        if (use && use != 0) {
+        if (use && use !== 0) {
             this.config.scales = this.config.scales.map(n => parseFloat((n / use).toFixed(2)))
         }
 
-        //clear
+        // clear
         this.wrapper.replaceChildren()
 
-        //init wrapper
+        // init wrapper
         this.wrapper.style.width = this.config.size
         this.wrapper.style.height = this.config.size
         this.wrapper.style.position = 'relative'
         this.width = this.wrapper.getBoundingClientRect().width
 
-        //create gauge
-        this.gauge = document.createElement("div")
+        // create gauge
+        this.gauge = document.createElement('div')
 
         // this.gauge.setAttribute("style", "--gauge-value:0;--container-size:" + this.width / 50 + ";--gn-distance:" + this.config.digits.distance + ";--digit-size:" + this.config.digits.size + ";--ga-tick-count:10;--ga-subtick-count:100;--hng-plate-hue:" + this.config.platehue + ";");
-        this.gauge.setAttribute("style", "--gauge-value:0;--ga-tick-count:10;--ga-subtick-count:100;");
+        this.gauge.setAttribute('style', '--gauge-value:0;--ga-tick-count:10;--ga-subtick-count:100;')
         this.gauge.style.width = '100%'
         this.gauge.style.setProperty('height', '100%')
         this.gauge.style.setProperty('--container-size', this.width / 50)
@@ -547,129 +547,128 @@ class GaugeHotnipi extends HTMLElement {
         this.gauge.style.setProperty('--hng-plate-hue', this.config.platehue)
         this.gauge.style.setProperty('--plate-hue', this.config.platehue)
 
-
-        //body
-        let body = document.createElement("div")
-        body.className = "g-body"
-        if (this.config.shape == "round") {
-            body.classList.add("g-round")
+        // body
+        const body = document.createElement('div')
+        body.className = 'g-body'
+        if (this.config.shape === 'round') {
+            body.classList.add('g-round')
         }
         this.gauge.appendChild(body)
 
-        //ring
-        let ring = document.createElement("div")
-        ring.className = "g-ring"
+        // ring
+        const ring = document.createElement('div')
+        ring.className = 'g-ring'
         body.appendChild(ring)
 
-        //rivets
-        if (this.config.rivets && this.config.shape == "rect") {
-            let rivets = document.createElement("div")
-            rivets.className = "g-rivets"
+        // rivets
+        if (this.config.rivets && this.config.shape === 'rect') {
+            const rivets = document.createElement('div')
+            rivets.className = 'g-rivets'
             ring.appendChild(rivets)
             for (let i = 0; i < 4; ++i) {
-                let rivet = document.createElement("div")
-                rivet.className = "g-rivet"
+                const rivet = document.createElement('div')
+                rivet.className = 'g-rivet'
                 rivets.appendChild(rivet)
             }
         }
 
-        //plate
-        let plate = document.createElement("div")
-        plate.className = "g-plate"
+        // plate
+        const plate = document.createElement('div')
+        plate.className = 'g-plate'
         ring.appendChild(plate)
 
-        //zones
+        // zones
         if (this.config.zones.length > 0) {
             let zone, cl
             this.config.zones.forEach(z => {
-                zone = document.createElement("div")
-                cl = "g-zone "
-                cl += "g-zone-" + z.cover + " "
+                zone = document.createElement('div')
+                cl = 'g-zone '
+                cl += 'g-zone-' + z.cover + ' '
                 cl += z.type
                 zone.className = cl
-                zone.style.rotate = z.rotate + "deg"
+                zone.style.rotate = z.rotate + 'deg'
                 plate.appendChild(zone)
             })
         }
 
-        //led
+        // led
         if (this.config.led) {
-            this.led = document.createElement("div")
-            this.led.className = "g-led"
+            this.led = document.createElement('div')
+            this.led.className = 'g-led'
             plate.appendChild(this.led)
         }
 
-        //ticks
-        let ticks = document.createElement("div")
-        ticks.className = "g-ticks"
+        // ticks
+        const ticks = document.createElement('div')
+        ticks.className = 'g-ticks'
         plate.appendChild(ticks)
 
         for (let i = 1; i < 12; i++) {
-            let tick = document.createElement("div")
-            tick.className = "g-tick"
-            tick.setAttribute("style", "--ga-tick:" + i)
+            const tick = document.createElement('div')
+            tick.className = 'g-tick'
+            tick.setAttribute('style', '--ga-tick:' + i)
             ticks.appendChild(tick)
         }
 
         for (let i = 2; i < 101; i++) {
-            let is = i.toString()
-            if (is.charAt(is.length - 1) == "1") {
+            const is = i.toString()
+            if (is.charAt(is.length - 1) === '1') {
                 continue
             }
-            let tick = document.createElement("div")
-            tick.className = "g-subtick"
-            tick.setAttribute("style", "--ga-tick:" + i)
+            const tick = document.createElement('div')
+            tick.className = 'g-subtick'
+            tick.setAttribute('style', '--ga-tick:' + i)
             ticks.appendChild(tick)
         }
 
-        //numbers
+        // numbers
 
-        let numbers = document.createElement("div")
-        numbers.className = "g-nums"
+        const numbers = document.createElement('div')
+        numbers.className = 'g-nums'
         plate.appendChild(numbers)
         for (let i = 1; i < 12; i++) {
-            let num = document.createElement("div")
-            num.className = "g-num"
-            num.setAttribute("style", "--ga-tick:" + i)
+            const num = document.createElement('div')
+            num.className = 'g-num'
+            num.setAttribute('style', '--ga-tick:' + i)
             num.textContent = (this.config.scales[i - 1]).toString()
             numbers.appendChild(num)
         }
 
-        //measurement field
+        // measurement field
         if (this.config.measurement) {
-            let label = document.createElement("div")
-            label.className = "g-text g-label"
+            const label = document.createElement('div')
+            label.className = 'g-text g-label'
             label.textContent = this.config.measurement
             plate.appendChild(label)
         }
 
-        //unit
+        // unit
         if (this.config.unit) {
-            let label = document.createElement("div")
-            label.className = "g-text g-unit"
+            const label = document.createElement('div')
+            label.className = 'g-text g-unit'
             label.textContent = this.config.unit
             plate.appendChild(label)
         }
-        //multiplier
+        // multiplier
         if (this.config.multiplier) {
-            let label = document.createElement("div")
-            label.className = "g-text g-multi"
-            label.textContent = "x" + this.config.multiplier
+            const label = document.createElement('div')
+            label.className = 'g-text g-multi'
+            label.textContent = 'x' + this.config.multiplier
             plate.appendChild(label)
         }
 
-        //needle
-        let needle = document.createElement("div")
-        needle.className = "g-needle"
+        // needle
+        const needle = document.createElement('div')
+        needle.className = 'g-needle'
         plate.appendChild(needle)
 
-        let needleRing = document.createElement("div")
-        needleRing.className = "g-needle-ring"
+        const needleRing = document.createElement('div')
+        needleRing.className = 'g-needle-ring'
         plate.appendChild(needleRing)
 
-        //valueField
-        this.valueField = document.createElement("div")
-        this.valueField.className = "g-val"
+        // valueField
+        this.valueField = document.createElement('div')
+        this.valueField.className = 'g-val'
         plate.appendChild(this.valueField)
 
         this.wrapper.appendChild(this.gauge)
@@ -677,7 +676,7 @@ class GaugeHotnipi extends HTMLElement {
     }
 
     removeBlink() {
-        this.led.classList.remove("active")
+        this.led.classList.remove('active')
         this.delay = null
     }
 
@@ -689,16 +688,16 @@ class GaugeHotnipi extends HTMLElement {
 
         const t = this.config.multiplier ? (value / this.config.multiplier).toFixed(1) : value.toFixed(1)
         this.valueField.textContent = t
-        const v = ((value - this.config.min) / (this.config.max - this.config.min)) * 100;
-        this.gauge.style.setProperty('--gauge-value', v);
+        const v = ((value - this.config.min) / (this.config.max - this.config.min)) * 100
+        this.gauge.style.setProperty('--gauge-value', v)
 
-        //blink led
+        // blink led
         if (this.config.led) {
             if (this.delay != null) {
                 clearTimeout(this.delay)
                 this.removeBlink()
             }
-            this.led.classList.add("active")
+            this.led.classList.add('active')
             this.delay = setTimeout(() => this.removeBlink(), 800)
         }
     }
