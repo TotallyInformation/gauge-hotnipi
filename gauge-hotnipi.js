@@ -439,7 +439,7 @@ class GaugeHotnipi extends HTMLElement {
     // TODO: Improve attribute error logs
     attributeChangedCallback(name, from, to) {
         if (from !== to) { // eslint-disable-line sonarjs/no-collapsible-if
-            if (Object.prototype.hasOwnProperty.call(this.config, 'name')) {
+            if (Object.prototype.hasOwnProperty.call(this.config, name)) {
                 switch (name) {
                     case 'min': {
                         to = parseFloat(to)
@@ -458,7 +458,7 @@ class GaugeHotnipi extends HTMLElement {
                     case 'platehue': {
                         // If a string passed as the hue, attempt to calculate the actual value.
                         // Allows for internal and external css variables to be used.
-                        console.log(isNaN(to), getComputedStyle(document.body).getPropertyValue(to))
+                        console.debug('debug platehue: ', isNaN(to), getComputedStyle(document.body).getPropertyValue(to))
                         if (isNaN(to)) {
                             const hue = getComputedStyle(document.body).getPropertyValue(to)
                             if (hue === '') to = this.config.platehue
