@@ -88,6 +88,7 @@ template.innerHTML = html`
             border-radius: 15%;
             box-shadow: 0px 2px 4px 2px #00000030;
             background: linear-gradient(0deg, var(--surface3) 0%, var(--surface4) 99%, var(--surface1) 100%);
+            user-select: none;
         }
         .g-round{
             border-radius: 100%;

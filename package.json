@@ -2,8 +2,8 @@
   "name": "gauge-hotnipi",
   "version": "1.0.0",
   "private": false,
-  "description": "A nice looking gauge gifted by hotnipi",
-  "browser": "./gauge-hotnipi.js",
+  "description": "A nice looking gauge gifted by hotnipi for use in Node-RED, uibuilder and other uses.",
+  "browser": "./gauge-hotnipi.iife.min.js",
   "scripts": {
     "build": "echo \"Error: no build process specified\" && exit 1"
   },
@@ -28,7 +28,14 @@
     "chart",
     "node-red-contrib-uibuilder"
   ],
-  "author": "Julian Knight (Totally Information)",
+  "author": "hotNipi",
+  "contributors": [{
+    "name": "Julian Knight (TotallyInformation)",
+    "url": "https://github.com/TotallyInformation"
+  }, {
+    "name": "hotNipi",
+    "url": "https://github.com/hotNipi"
+  }],
   "license": "Apache-2.0",
   "homepage": "https://github.com/TotallyInformation/gauge-hotnipi",
   "bugs": "https://github.com/TotallyInformation/gauge-hotnipi/issues",
