@@ -455,16 +455,11 @@ class GaugeHotnipi extends HTMLElement {
                         break
                     }
                     case "platehue": {
-                        // to = parseFloat(to)
-                        // if (isNaN(to)) {
-                        //     to = 120;
-                        // }
                         // If a string passed as the hue, attempt to calculate the actual value.
                         // Allows for internal and external css variables to be used.
                         console.log(isNaN(to), getComputedStyle(document.body).getPropertyValue(to))
                         if (isNaN(to)) {
                             let hue = getComputedStyle(document.body).getPropertyValue(to)
-                            console.log('x2', hue, getComputedStyle(document.body).getPropertyValue(hue))
                             if (hue === '') to = this.config.platehue
                             else to = hue
                         }
@@ -494,12 +489,11 @@ class GaugeHotnipi extends HTMLElement {
                     case "zones": {
                         try {
                             to = JSON.parse(to)
-                        }
-                        catch (error) {
-                            console.log(error)
+                        } catch (error) {
+                            console.warn(error, to)
                             to = this.config.zones
                         }
-                        break;
+                        break
                     }
                     default:
                         break;
