@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en"><head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="../uibuilder/images/node-blue.ico">
+
+    <title>Blank template - Node-RED uibuilder</title>
+    <meta name="description" content="Node-RED uibuilder - Blank template">
+
+    <!-- Your own CSS (defaults to loading uibuilders css)-->
+    <link type="text/css" rel="stylesheet" href="./index.css" media="all">
+
+    <!-- #region Supporting Scripts. These MUST be in the right order. Note no leading / -->
+    <script defer src="../uibuilder/uibuilder.iife.min.js"></script>
+    <script defer src="./index.js">/* OPTIONAL: Put your custom code in that */</script> 
+    <script defer src="./hotnipi-gauge.js">/* OPTIONAL: Put your custom code in that */</script> 
+    <!-- #endregion -->
+
+</head><body class="uib">
+    
+    <h1 class="with-subtitle">uibuilder Blank Template</h1>
+    <div role="doc-subtitle">Using the IIFE library.</div>
+
+    <div id="more"><!-- '#more' is used as a parent for dynamic HTML content in examples --></div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(195px, 1fr));   gap: 1em;    padding: 1em;">
+    <div style="position:relative;margin:0.5em;width:200px;height:200px"><!-- 'gauge sizes are relative to container so width and height must be somewhere up in DOM tree -->
+        
+        <!-- hot-nipi-gauge attributes:            
+            "min" - (number, mandatory) min value  
+            "max" - (number, mandatory) max value
+            "shape" - (string, optional) shape of the gauge. "round" makes gauge round shape and removes rivets, "rect" is default
+            "platehue" - (number, optional) for dark theme, the plate color hue can be changed 
+            "multiplier" - (number, optional) multiplier for all values. scale numbers and value are divided by that, gauge shows multiplier on plate (fe: x100)
+            "measurement" - (string, optional) the name of the measurement (temperature, humidity ...)
+            "unit" - (string, optional) the unit of the measurement
+            "rivets" - (boolean, optional) show/hide rivets. defaults to true
+            "digits" - (json string, optional) size and placement of the scale digits.  '{"size":100,"distance":14}' size is treated as percentage, distance is arbitrary number around 15.
+            "led" - (boolean, optional) shows small led which blinks couple of times when update is received.
+            "zones" - (json string, optional) configuration of zones. An array of objects where:
+                "type" (string) - color choice. acceptable values "low", "normal", "warn", "high"
+                "cover" (number) - size of zone. acceptable values 1, 2 3. (1 covers space between major ticks)
+                "rotate" (number) - to find correct value, try with 0 and manually rotate to desired position using browser developer tools. When position found, adjust the code. 
+                
+                
+            All attributes can be changed at runtime, forces redraw.
+            fe: 
+            document.getElementById('gauge').setAttribute('digits',JSON.stringify({size:80,distance:15}))
+            document.getElementById('gauge').setAttribute('max',1200)                    
+        -->
+        
+        <hot-nipi-gauge id="gauge" min="0" max="100" multiplier="10" zones='[{"type":"warn","cover":1,"rotate":55},{"type":"high","cover":2,"rotate":82}]' measurement="Pressure" digits='{"size":100,"distance":14.5}' unit="PSI" rivets="true" led="true"></hot-nipi-gauge>
+    </div>
+    <div style="position:relative;margin:0.5em;width:200px;height:200px">
+        <hot-nipi-gauge id="gauge1" min="0" max="100" multiplier="10" zones='[{"type":"warn","cover":1,"rotate":55},{"type":"high","cover":2,"rotate":82}]' measurement="Pressure" digits='{"size":100,"distance":14.5}' unit="PSI" rivets="true" led="true"></hot-nipi-gauge>
+    </div>
+    <div style="position:relative;margin:0.5em;width:200px;height:200px">
+        <hot-nipi-gauge id="gauge2" min="0" max="100" multiplier="10" zones='[{"type":"warn","cover":1,"rotate":55},{"type":"high","cover":2,"rotate":82}]' measurement="Pressure" digits='{"size":100,"distance":14.5}' unit="PSI" rivets="true" led="true"></hot-nipi-gauge>
+    </div>
+    <div style="position:relative;margin:0.5em;width:200px;height:200px">
+        <hot-nipi-gauge id="gauge3" min="0" max="100" multiplier="10" platehue="200" zones='[{"type":"warn","cover":1,"rotate":55},{"type":"high","cover":2,"rotate":82}]' measurement="Pressure" digits='{"size":100,"distance":14.5}' unit="PSI" rivets="true" led="true"></hot-nipi-gauge>
+    </div>
+    <div style="position:relative;margin:0.5em;width:200px;height:200px">
+        <hot-nipi-gauge id="gauge4" min="0" max="100" multiplier="10" platehue="0" zones='[{"type":"warn","cover":1,"rotate":55},{"type":"high","cover":2,"rotate":82}]' measurement="Pressure" digits='{"size":100,"distance":14.5}' unit="PSI" rivets="true" led="true"></hot-nipi-gauge>
+    </div>
+
+</div>
+    
+</body></html>
