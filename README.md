@@ -60,3 +60,11 @@ Add this to a `ui_template` node:
     }
 </script>
 ```
+
+## References
+
+* Node-RED Forum
+
+  * https://discourse.nodered.org/t/new-w3c-gauge-component-gifted-to-the-community-by-hotnipi/78557
+  * https://discourse.nodered.org/t/showing-gauges-in-uibuilder/78473/3
+  * https://discourse.nodered.org/t/dashboard-2-0-is-now-generally-available/84913/73?u=totallyinformation
