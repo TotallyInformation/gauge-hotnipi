@@ -19,7 +19,28 @@ A nice looking gauge W3C component gifted by hotnipi for use with Node-RED, uibu
   * "cover" (number) - size of zone. acceptable values 1, 2 3. (1 covers space between major ticks)
   * "rotate" (number) - to find correct value, try with 0 and manually rotate to desired position using browser developer tools. When position found, adjust the code.
   * "size" - (CSS size string) - Optional. Defines the outer size (width/height). If supplied, no outer div is required to set the size. If omitted, the outer elements must set a size somewhere.
- 
+
+## Overridable CSS
+
+The following CSS variables can be used to override the defaults.
+
+```css
+--needle-color
+--zone-color-high
+--zone-color-warn
+--zone-color-normal
+--zone-color-low
+```
+
+Also - originally from the [UIBUILDER uib-brand.css](https://github.com/TotallyInformation/node-red-contrib-uibuilder/blob/main/front-end/uib-brand.css):
+
+```css
+/* Background colours */
+--surface1, --surface2, --surface3, --surface4, --surface5
+/* Text colour */
+--text3
+```
+
 ## Example - Change attributes in JavaScript
 
 Forces a redraw.
