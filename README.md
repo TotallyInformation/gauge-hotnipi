@@ -1,6 +1,14 @@
 # gauge-hotnipi
 A nice looking gauge W3C component gifted by hotnipi for use with Node-RED, uibuilder and other uses
 
+## Installation
+
+If using with UIBUILDER for Node-RED, simply use UIBUILDER's library manager to install `totallyinformation/gauge-hotnipi`, you can then reference the component in your HTML with `<link href="../uibuilder/vendor/gauge-hotnipi/gauge-hotnipi.iife.min.js">`. If placing the link in your HTML `<head>` with the other uibuilder links, don't forget to add the `defer` attribute so that it loads in the correct order.
+
+If using with the Node-RED Dashboard, you will need to copy the `gauge-hotnipi.iife.min.js` file to a location that Node-RED will make available over its user-facing web server. For example, you can configure a static folder in Node-RED's `settings.js` file.
+
+For use with other platforms, please refer to your platform documentation as to how to make resources available to the front-end.
+
 ## HTML Attributes
  
 * "min" - (number, mandatory) min value
